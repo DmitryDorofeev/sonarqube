@@ -12,6 +12,14 @@
     WHERE file_uuid = #{fileUuid} and data_type = #{dataType}
   </select>
 
+  <select id="selectByProjectUuid" parameterType="map" resultType="org.sonar.db.source.FileSourceDto">
+    SELECT id, project_uuid as projectUuid, file_uuid as fileUuid, created_at as createdAt, updated_at as updatedAt,
+    binary_data as binaryData, line_hashes as lineHashes, data_hash as dataHash, src_hash as srcHash, data_type as
+    dataType, revision
+    FROM file_sources
+    WHERE project_uuid = #{projectUuid} and data_type = #{dataType}
+  </select>
+
   <select id="selectHashesForProject" parameterType="map" resultType="org.sonar.db.source.FileSourceDto">
     SELECT id, file_uuid as fileUuid, data_hash as dataHash, src_hash as srcHash, revision, updated_at as updatedAt
     FROM file_sources

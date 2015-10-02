@@ -23,7 +23,11 @@ package org.sonar.db.source;
 import com.google.common.base.Function;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.io.IOUtils;
+import org.apache.ibatis.session.ResultContext;
+import org.apache.ibatis.session.ResultHandler;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -59,6 +63,21 @@ public class FileSourceDaoTest {
     assertThat(fileSourceDto.getUpdatedAt()).isEqualTo(1500000000000L);
     assertThat(fileSourceDto.getDataType()).isEqualTo(Type.SOURCE);
     assertThat(fileSourceDto.getRevision()).isEqualTo("123456789");
+  }
+
+  @Test
+  public void selectSourcesByProjectUuid() {
+    dbTester.prepareDbUnit(getClass(), "selectSourcesByProjectUuid.xml");
+
+    final List<FileSourceDto> result = new ArrayList<>();
+    underTest.selectSourcesByProjectUuid(session, "PRJ_UUID", new ResultHandler() {
+      @Override
+      public void handleResult(ResultContext context) {
+        result.add((FileSourceDto) context.getResultObject());
+      }
+    });
+
+    assertThat(result).extracting("fileUuid").containsOnly("FILE1_UUID", "FILE2_UUID");
   }
 
   @Test

@@ -18,25 +18,15 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.sonar.db.source;
+package org.sonar.server.computation.scm;
 
-import java.util.List;
-import javax.annotation.CheckForNull;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.ResultHandler;
+public interface MutableScmInfoHolder extends ScmInfoHolder {
 
-public interface FileSourceMapper {
-
-  List<FileSourceDto> selectHashesForProject(@Param("projectUuid") String projectUuid, @Param("dataType") String dataType);
-
-  @CheckForNull
-  FileSourceDto select(@Param("fileUuid") String fileUuid, @Param("dataType") String dataType);
-
-  void selectByProjectUuid(@Param("projectUuid") String projectUuid, @Param("dataType") String dataType, ResultHandler resultHandler);
-
-  void insert(FileSourceDto dto);
-
-  void update(FileSourceDto dto);
-
-  void updateDateWhenUpdatedDateIsZero(@Param("projectUuid") String projectUuid, @Param("date") Long updateDate);
+  /**
+   * Set SCM info for current project.
+   *
+   * @throws NullPointerException if {@code changesets} is {@code null}
+   * TODO shall we allow empty changeset when SCM disabled ?
+   */
+  void setScmInfos(Iterable<Changeset> changesets);
 }

@@ -31,6 +31,7 @@ import java.util.List;
 import javax.annotation.CheckForNull;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.ibatis.session.ResultHandler;
 import org.sonar.db.Dao;
 import org.sonar.db.DbSession;
 import org.sonar.db.MyBatis;
@@ -48,6 +49,10 @@ public class FileSourceDao implements Dao {
   @CheckForNull
   public FileSourceDto selectSourceByFileUuid(DbSession session, String fileUuid) {
     return mapper(session).select(fileUuid, Type.SOURCE);
+  }
+
+  public void selectSourcesByProjectUuid(DbSession session, String projectUuid, ResultHandler handler) {
+    mapper(session).selectByProjectUuid(projectUuid, Type.SOURCE, handler);
   }
 
   @CheckForNull

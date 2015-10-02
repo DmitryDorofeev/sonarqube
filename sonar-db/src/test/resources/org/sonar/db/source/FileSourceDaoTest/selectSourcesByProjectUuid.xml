@@ -1,0 +1,29 @@
+<dataset>
+
+    <file_sources id="101" project_uuid="PRJ_UUID" file_uuid="FILE1_UUID"
+                  binary_data="abcde" data_hash="hash"
+                  line_hashes="ABC\nDEF\nGHI"
+                  src_hash="FILE_HASH" revision="123456789"
+                  created_at="1500000000000" updated_at="1500000000000"  data_type="SOURCE"/>
+
+  <file_sources id="102" project_uuid="PRJ_UUID" file_uuid="FILE2_UUID"
+                binary_data="abcde" data_hash="hash"
+                line_hashes="ABC\nDEF\nGHI"
+                src_hash="FILE_HASH" revision="123456789"
+                created_at="1500000000000" updated_at="1500000000000"  data_type="SOURCE"/>
+
+  <!-- Test file : should not be returned -->
+  <file_sources id="103" project_uuid="PRJ_UUID" file_uuid="FILE3_UUID"
+                binary_data="abcde" data_hash="hash"
+                line_hashes="ABC\nDEF\nGHI"
+                src_hash="FILE_HASH" revision="123456789"
+                created_at="1500000000000" updated_at="1500000000000"  data_type="TEST"/>
+
+  <!-- File from another project -->
+  <file_sources id="104" project_uuid="OTHER_PRJ_UUID" file_uuid="FILE4_UUID"
+                binary_data="abcde" data_hash="hash"
+                line_hashes="ABC\nDEF\nGHI"
+                src_hash="FILE_HASH" revision="123456789"
+                created_at="1500000000000" updated_at="1500000000000"  data_type="SOURCE"/>
+
+</dataset>

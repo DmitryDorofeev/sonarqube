@@ -18,25 +18,23 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-package org.sonar.db.source;
+package org.sonar.server.computation.scm;
 
-import java.util.List;
-import javax.annotation.CheckForNull;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.ResultHandler;
+import com.google.common.base.Optional;
+import org.sonar.server.computation.component.Component;
 
-public interface FileSourceMapper {
+/**
+ * Return SCM information of components.
+ *
+ * It will always search in the db if there's nothing in the report.
+ */
+public interface ScmInfoHolder {
 
-  List<FileSourceDto> selectHashesForProject(@Param("projectUuid") String projectUuid, @Param("dataType") String dataType);
-
-  @CheckForNull
-  FileSourceDto select(@Param("fileUuid") String fileUuid, @Param("dataType") String dataType);
-
-  void selectByProjectUuid(@Param("projectUuid") String projectUuid, @Param("dataType") String dataType, ResultHandler resultHandler);
-
-  void insert(FileSourceDto dto);
-
-  void update(FileSourceDto dto);
-
-  void updateDateWhenUpdatedDateIsZero(@Param("projectUuid") String projectUuid, @Param("date") Long updateDate);
+  /**
+   * Returns Scm info for the specified component if there is any, first looking into the report, then into the database
+   * It there's nothing in the report and in the db (on first analysis for instance), then it return a {@link Optional#absent()}.
+   *
+   * @throws NullPointerException if argument is {@code null}
+   */
+  Optional<ScmInfo> getScmInfo(Component component);
 }
